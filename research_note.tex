@@ -1,0 +1,68 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[greek,english]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{microtype}
+
+\geometry{margin=2.5cm}
+
+\definecolor{boxblue}{RGB}{30,80,160}
+\definecolor{boxbg}{RGB}{245,248,255}
+
+\newtcolorbox{propositionbox}{
+  colback=boxbg,
+  colframe=boxblue,
+  boxrule=1.2pt,
+  arc=3pt,
+  left=8pt,
+  right=8pt,
+  top=6pt,
+  bottom=6pt,
+  fonttitle=\bfseries\large,
+  coltitle=boxblue,
+  title=
+}
+
+\title{\textbf{Research Note: Algorithmic Rendering of Latent AI\\Semantics}}
+\author{Γιάννης Κωνσταντέλλος}
+\date{14 Αυγούστου 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{\selectlanguage{greek}Η Αρχική Σύλληψη (Greek)}
+
+\begin{propositionbox}
+\selectlanguage{greek}
+\subsection*{Το Πρόβλημα \& Η Λύση}
+
+Επίσης, αν υποτεθεί κιόλας ότι αφήνουμε την τεχνητή νοημοσύνη, χωρίς ανθρώπινο έλεγχο σε μία αλληλουχία βημάτων της ``σκέψης'' της, και έχουμε κάποιο νόημα που εκφράζεται από μία συστοιχία διανυσμάτων, ή ένα διάνυσμα, για το/α οποίο/α διάνυσμα(τα), δεν υπάρχει ανθρώπινη λέξη.
+
+Θα μπορούσαμε: εφόσον οι λέξεις λειτουργούν και ως συναρτήσεις που παίρνουν ορίσματα λέξεις (και λοιπές δηλαδή συναρτήσεις σε αυτό το κομμάτι που λέμε τώρα..), και παράγουν συγκεκριμένα νοήματα, να παράξουμε αλγορίθμους περιφραστικής (ή και με μία λέξη ενδεχομένως, και ας απουσιάζει από τα ανθρώπινα λεξικά) (βέλτιστης) απόδοσης του νοήματος (ή και ενός συνόλου/πλέγματος νοημάτων) που επεξεργάζεται η τεχνητή νοημοσύνη, σε ανθρώπινη γλώσσα -- στα πλαίσια των τεχνικών επικοινωνίας ανθρώπου -- ai, και ελέγχου της ai, από τον άνθρωπο!
+\end{propositionbox}
+
+\newpage
+
+\section*{Academic Translation (English)}
+
+\begin{propositionbox}
+\subsection*{Translated \& Refined Proposition}
+
+Furthermore, assuming we allow an artificial intelligence to operate without human oversight during a sequence of its internal ``reasoning'' steps, we may encounter a semantic concept expressed by a continuous vector---or an array of vectors---for which no corresponding word exists in the human lexicon (lexical gaps / alien features).
+
+Given that words inherently operate as functions taking other words (i.e., other functions, within this compositional context) as arguments to produce specific meanings, we could potentially develop algorithms for the optimal linguistic rendering of such latent concepts. This rendering could be paraphrastic or even encapsulated in a newly coined single word, despite its absence from existing human dictionaries. Ultimately, this approach would translate the abstract concepts or complex conceptual networks processed by the AI into human language, serving as a foundational mechanism for human-AI communication, interpretability, and human oversight.
+\end{propositionbox}
+
+\section*{Theoretical Positioning}
+
+This proposition perfectly targets the current frontier of Mechanistic Interpretability and the ``Dictionary Learning'' problem in Large Language Models (e.g., Anthropic's Sparse Autoencoders). While current research identifies that AI models form internal representations without direct human-language equivalents, the proposed solution is highly novel. By treating human language through the lens of Compositional Distributional Semantics---where words are mathematical functions and operators---the proposed algorithm acts as a formal semantic compiler. It systematically decodes the high-dimensional, non-Euclidean ``thoughts'' of the AI into syntactically valid human language, moving beyond simple statistical guessing towards a rigorous mathematical framework for AI alignment.
+
+\end{document}

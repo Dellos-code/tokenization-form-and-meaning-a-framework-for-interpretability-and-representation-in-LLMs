@@ -1,0 +1,173 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{url}
+
+\geometry{margin=2.5cm}
+
+\title{\textbf{Tokenization, Form, and Meaning: A Theoretical Framework for\\Mechanistic Interpretability and the Limits of Representation in\\Language Models}}
+\author{Ioannis Konstantellos\\[0.3em]\textit{Independent Researcher}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This position paper proposes a unified theoretical and methodological framework connecting the tokenization process to meaning production and the mechanistic interpretability of Large Language Models. The threefold contribution of this work is established as follows: First, it proposes a causal intervention methodology on tokenization morphology through the study of ``pseudo-transparent'' words. Second, it introduces a rigorous information-theoretic evaluation of morphological loss ($\Lambda$) via the Data Processing Inequality (DPI) and Fano bounds, incorporating the typological calibration of the phenomenon. Third, it formulates the design of a semantic compiler, grounded in Compositional Distributional Semantics, for the algorithmic rendering of latent representations---such as those extracted by Sparse Autoencoders (SAEs)---into syntactically valid human language.
+\end{abstract}
+
+\section{Introduction}
+
+Despite the rapid improvement of Large Language Models (LLMs), the fundamental interface between discrete input tokens and the continuous latent space remains opaque. While the phenomenon of ``semantic leakage'' has been documented in the literature~\cite{gonen2025}, existing research focuses almost exclusively on the whole-word or whole-concept level, ignoring the semantic contribution of subword units. The present work addresses this gap, formulating the hypothesis that tokenization is not merely an efficient compression mechanism, but causally determines the boundaries of what the model can ``understand''. Within this context, the problem of interpretability is positioned at the intersection of subword morphology and algorithmic semantics, examining whether the vehicle of representation sets theoretical limits on the represented meaning.
+
+\section{The Token Powerset and Semantic Direction}
+
+A prompt should not be treated as a single semantic unit, but as the powerset of its $n$ constituent tokens. Under this prism, we examine $2^n$ possible subsets $S \subset P$, each emitting its own distinct ``semantic direction'' into the model's latent space, regardless of the author's intent.
+
+In contrast to traditional attribution methods, which ask ``how much'' an input segment contributed, the present approach introduces the geometric direction of the contribution, classifying subsets into three classes:
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Parasitic:} Subsets that divert the response from the legitimate outcome.
+  \item \textbf{Reinforcing:} Subsets that fully align with the ultimate goal.
+  \item \textbf{Enriching:} Subsets that add semantic depth without deviating from the goal.
+\end{itemize}
+
+The evaluation criterion is fourfold: accuracy, appropriateness, completeness, and safety. This unified view incorporates safety phenomena such as adversarial suffixes~\cite{zou2023}, which are now analyzed as extreme cases of parasitic subsets.
+
+In this context, the transparency-compactness hypothesis is formulated: compact and morphologically transparent formulations (e.g., the Greek word «υδραγωγείο» [aqueduct] = ύδωρ [water] + άγω [lead]) minimize parasitic noise compared to lengthy circumlocutions. The regulatory power of transparency directly depends on the familiarity and productivity of the components~\cite{hofmann2021}, as algorithms like BPE select token boundaries based on statistical frequency~\cite{bostrom2020,sennrich2016} (e.g., the prefix ``pro-'' or the word ``sword'').
+
+\section{Information-Theoretic Limits of Tokenization}
+
+If tokenization acts as a meaning filter, then the information loss must be mathematically measurable. We define the morphological information loss $\Lambda$ during the operation of a tokenizer as:
+\begin{equation}
+\Lambda := I(\mathcal{M}; \mathcal{F}) - I(\mathcal{M}; \mathcal{T}) \geq 0
+\end{equation}
+where $\mathcal{M}$ is Meaning, $\mathcal{F}$ is Form (the whole word), and $\mathcal{T}$ represents the generated Tokens.
+
+The non-negativity condition is dictated directly by the Data Processing Inequality (DPI) in the Markov chain $\mathcal{M} \to \mathcal{F} \to \mathcal{T}$~\cite{cover2006}. Based on this formalization, Fano's inequality~\cite{cover2006} yields a nontrivial theoretical lower bound on the meaning-recovery error of any downstream model: since $H(\mathcal{M}|\mathcal{T}) = H(\mathcal{M}) - I(\mathcal{M}; \mathcal{F}) + \Lambda$, every additional bit of morphological loss raises that bound. If the tokenizer destroys the morphological structure, no language model, regardless of size, can fully recover it.
+
+Furthermore, sensitivity to $\Lambda$ is not universal but requires typological calibration~\cite{rust2021}. The impact of this loss is expected to differ dramatically among analytic (e.g., English), agglutinative (e.g., Turkish), and fusional languages (e.g., Greek).
+
+\section{Proposed Causal Methodology: The Pseudo-Transparency Experiment}
+
+For the causal confirmation of the hypothesis, a three-pronged behavioral experiment is proposed. Contrasting transparent terms (where the parts point to the whole) and opaque loanwords (where the parts have no meaning, e.g., «σέρβερ» [server]), this study introduces the examination of pseudo-transparent words.
+
+A flagship example is the Greek word «προσπάθεια» (effort). Etymologically, it is correctly analyzed as προσ- + παθ- (to suffer/passion); however, the combination of statistically frequent subword units favors a tempting (yet erroneous) pseudo-analysis: προ- (pre-) + σπαθί (sword). The research setup involves the mechanism of \emph{forced tokenization}. By imposing the morphologically correct tokenization (προσ\,παθ) versus the pseudo-tokenization (προ\,σπαθ) on the model, we measure the divergence in its semantic behavior. Deviations in the generated output offer direct, causal proof that segmentation determines what the model ``thinks''.
+
+\subsection{Cognitive Parallels: Tokenization as Statistical Folk Etymology}
+
+The phenomenon of pseudo-transparency is not exclusively algorithmic; it powerfully mirrors the historical human tendency of \emph{folk etymology}, where speakers naturally analyze opaque words into familiar, high-frequency components. Psycholinguistically, this aligns with the established phenomenon of morpho-orthographic priming---such as the classic \emph{corner}/\textsc{corn} effect~\cite{rastle2004}---which demonstrates that human cognition instinctively decomposes words based on superficial form rather than semantic truth. By falling into identical pseudo-analytical traps, algorithms like BPE essentially mechanize and replicate this centuries-old cognitive bias.
+
+It is precisely this intersection that highlights the novelty of the proposed methodology. While existing literature has explored parts of this domain---such as testing morphological transparency in feedforward networks (which failed to reproduce the human priming effect)~\cite{stevens2020}, demonstrating monolingual behavioral shifts by aligning tokenization with semantic radicals in Chinese~\cite{haslett2025}, or measuring model robustness to random re-tokenization~\cite{zheng2025}---the current field lacks a unified synthesis. The proposed experimental design bridges this gap by combining bilingual analysis, direct causal intervention on boundaries, and the highly specific contrast between the true etymological analysis and the psychologically real pseudo-analysis of the exact same word.
+
+\section{Mechanistic Interpretability and Semantic Compiling}
+
+Moving inside the network (latent spaces), morphemes must be treated as families of functions, applying principles of programmatic type-based dispatch/overloading~\cite{lieber2004,plag2018}. For example, the Greek prefix υπερ- (hyper-) behaves as a degree operator (υπερβολικός / excessive) or as a spatial operator (υπερατλαντικός / transatlantic), with the root determining the function type. This is also linked to the \emph{loanword narrowing hypothesis}, where loanwords (like the English \textit{hyper-}) undergo a restriction in their function's scope compared to the source language.
+
+To detect these semantic directions, the ``algorithm of conceptual bridges'' is proposed. A concept graph is constructed where edge weights are defined as $w = -\log p$ ($p$ being the transition probability). By applying Dijkstra's algorithm, the minimum cumulative cost paths reveal the most probable transitional semantic routes.
+
+This approach directly addresses a standing problem in Dictionary Learning, where methods like Sparse Autoencoders (SAEs) identify feature vectors without human lexical equivalents (alien features)~\cite{bricken2023,cunningham2024}. By combining Compositional Distributional Semantics~\cite{coecke2010} with the view of words as mathematical operators, we create an algorithmic \emph{semantic compiler}. This algorithm generates paraphrastic (or novel single-word) renderings of these ``alien'' features, allowing the alignment and oversight of AI in clear, syntactically valid human language.
+
+\paragraph{Discussion \& Conclusion}
+The proposed theoretical scheme imposes a strict methodological triangulation principle for findings to be considered valid: (a) Behavioral perspective (causal output manipulation), (b) Information-theoretic perspective (mutual information and KL divergences), and (c) Mechanistic perspective (tracing internal activation flows). The design is structured on a ``core \& exploration'' axis (``playing it by ear''), ensuring the scientific safety of the core while simultaneously opening up to ambitious possibilities. A fundamental prerequisite is the use of a semantically defined ground truth, with interventions applied to strictly defined linguistic spans to avoid the noise of arbitrary subsets (tokens).
+
+Ultimately, this framework elevates a profound philosophical inquiry---whether the vehicle of representation limits the meaning that can be represented---into a rigorously testable experimental domain. In human cognitive studies, researchers are largely restricted to passively measuring reaction times to infer semantic processing. Large Language Models, however, offer a fully observable system where the form-meaning interface is \emph{causally manipulable}. By altering tokenization boundaries and observing semantic shifts, we gain direct experimental access to a process that was previously opaque. This methodological leap translates an age-old question of form and content into a measurable, information-theoretic problem, establishing a foundation for algorithmically interpretable and fully human-controllable artificial intelligence systems.
+
+\begin{thebibliography}{99}
+
+\bibitem{bostrom2020}
+K. Bostrom and G. Durrett.
+\newblock Byte pair encoding is suboptimal for language model pretraining.
+\newblock \emph{Findings of the ACL: EMNLP 2020}, pages 4617--4624, 2020.
+\newblock arXiv:2004.03720.
+
+\bibitem{bricken2023}
+T. Bricken, A. Templeton, J. Batson, B. Chen, A. Jermyn, T. Conerly, et al.
+\newblock Towards monosemanticity: Decomposing language models with dictionary learning.
+\newblock \emph{Transformer Circuits Thread}, 2023.
+
+\bibitem{coecke2010}
+B. Coecke, M. Sadrzadeh, and S. Clark.
+\newblock Mathematical foundations for a compositional distributional model of meaning.
+\newblock \emph{Linguistic Analysis}, 36:345--384, 2010.
+\newblock arXiv:1003.4394.
+
+\bibitem{cunningham2024}
+H. Cunningham, A. Ewart, L. Riggs, R. Huben, and L. Sharkey.
+\newblock Sparse autoencoders find highly interpretable features in language models.
+\newblock \emph{ICLR 2024}.
+\newblock arXiv:2309.08600.
+
+\bibitem{cover2006}
+T. M. Cover and J. A. Thomas.
+\newblock \emph{Elements of Information Theory}.
+\newblock 2nd edition, Wiley-Interscience, 2006.
+
+\bibitem{haslett2025}
+Haslett.
+\newblock Aligning tokenization with semantic radicals shifts similarity judgments.
+\newblock \emph{Computational Linguistics}, 51(3), 2025.
+
+\bibitem{gonen2025}
+H. Gonen, T. Blevins, A. Liu, L. Zettlemoyer, and N. A. Smith.
+\newblock Does liking yellow imply driving a school bus? Semantic leakage in language models.
+\newblock \emph{Proc. NAACL 2025}, pages 785--798, 2025.
+\newblock arXiv:2408.06518.
+
+\bibitem{hofmann2021}
+V. Hofmann, J. B. Pierrehumbert, and H. Schütze.
+\newblock Superbizarre is not superb: Derivational morphology improves BERT's interpretation of complex words.
+\newblock \emph{Proc. ACL-IJCNLP 2021}, pages 3594--3608, 2021.
+
+\bibitem{lieber2004}
+R. Lieber.
+\newblock \emph{Morphology and Lexical Semantics}.
+\newblock Cambridge Studies in Linguistics 104. Cambridge University Press, 2004.
+
+\bibitem{plag2018}
+I. Plag.
+\newblock \emph{Word-Formation in English}.
+\newblock 2nd edition, Cambridge Textbooks in Linguistics. Cambridge University Press, 2018.
+
+\bibitem{rastle2004}
+K. Rastle, M. H. Davis, and B. New.
+\newblock The broth in my brother's keeper: Pseudo-morphological priming in visual word recognition.
+\newblock \emph{Psychonomic Bulletin \& Review}, 11(6):1090--1098, 2004.
+
+\bibitem{rust2021}
+P. Rust, J. Pfeiffer, I. Vulić, S. Ruder, and I. Gurevych.
+\newblock How good is your tokenizer? On the monolingual performance of multilingual language models.
+\newblock \emph{Proc. ACL-IJCNLP 2021}, pages 3118--3135, 2021.
+
+\bibitem{sennrich2016}
+R. Sennrich, B. Haddow, and A. Birch.
+\newblock Neural machine translation of rare words with subword units.
+\newblock \emph{Proc. ACL 2016}, pages 1715--1725, 2016.
+
+\bibitem{stevens2020}
+J. R. Stevens and D. C. Plaut.
+\newblock Testing morphological transparency in form-meaning networks.
+\newblock \emph{Proceedings of the Annual Meeting of the Cognitive Science Society (CogSci)}, 2020.
+
+\bibitem{zheng2025}
+Zheng et al.
+\newblock Measuring robustness to random re-tokenization in language models.
+\newblock \emph{NeurIPS 2025}.
+
+\bibitem{zou2023}
+A. Zou, Z. Wang, N. Carlini, M. Nasr, J. Z. Kolter, and M. Fredrikson.
+\newblock Universal and transferable adversarial attacks on aligned language models.
+\newblock arXiv:2307.15043, 2023.
+
+\end{thebibliography}
+
+\end{document}
